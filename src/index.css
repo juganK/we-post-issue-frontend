@@ -219,24 +219,36 @@ body::before {
 
 /* Marker Popup */
 .marker-popup {
-  min-width: 200px;
+  min-width: 220px;
+  max-width: 280px;
+  padding: 0;
+  margin: 0;
 }
 
 .marker-popup strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-transform: capitalize;
   font-weight: 600;
   font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.95);
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .marker-popup p {
   margin: 0;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.75);
   font-family: 'Inter', sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Issue Details Sheet */
@@ -262,8 +274,7 @@ body::before {
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, rgba(15, 15, 20, 0.98) 0%, rgba(10, 10, 15, 0.98) 100%);
-  backdrop-filter: blur(30px);
+  background: rgba(15, 15, 20, 0.98);
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 24px 24px 0 0;
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
@@ -271,8 +282,10 @@ body::before {
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow-y: auto;
+  will-change: transform, opacity;
+  contain: layout style paint;
 }
 
 .sheet-drag-handle {
@@ -296,11 +309,11 @@ body::before {
 
 @keyframes slideUp {
   from {
-    transform: translateY(100%);
+    transform: translateY(100%) scale(0.95);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
@@ -355,6 +368,7 @@ body::before {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.2);
   transform: rotate(90deg) scale(1.1);
+  will-change: transform;
 }
 
 .sheet-content {
@@ -384,7 +398,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   padding: 10px 20px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: rgba(255, 255, 255, 0.08);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   margin-bottom: 28px;
@@ -393,7 +407,6 @@ body::before {
   letter-spacing: 0.5px;
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
-  backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -405,8 +418,7 @@ body::before {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
 .issue-description:hover,
@@ -416,6 +428,7 @@ body::before {
   border-color: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  will-change: transform;
 }
 
 .issue-description h3,
@@ -470,10 +483,11 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
   z-index: 2000;
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
 }
 
 .report-modal {
@@ -481,8 +495,7 @@ body::before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, rgba(15, 15, 20, 0.98) 0%, rgba(10, 10, 15, 0.98) 100%);
-  backdrop-filter: blur(30px);
+  background: rgba(15, 15, 20, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
@@ -492,18 +505,29 @@ body::before {
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  animation: modalSlideIn 0.3s ease;
+  animation: modalSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow: hidden;
+  will-change: transform, opacity;
+  contain: layout style paint;
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -45%);
+    transform: translate(-50%, -48%) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -514,6 +538,7 @@ body::before {
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+  will-change: transform;
 }
 
 .modal-header h2 {
@@ -554,11 +579,12 @@ body::before {
   margin-bottom: 32px;
   padding-bottom: 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+  background: rgba(255, 255, 255, 0.02);
   padding: 20px;
   border-radius: 16px;
   margin-left: -12px;
   margin-right: -12px;
+  will-change: transform;
 }
 
 .form-section:last-of-type {
@@ -621,10 +647,9 @@ body::before {
   border-radius: 12px;
   outline: none;
   font-size: 0.95rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
-  backdrop-filter: blur(10px);
 }
 
 .form-group select {
@@ -645,6 +670,7 @@ body::before {
   outline: none;
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-1px);
+  will-change: transform;
 }
 
 .form-group select:hover {
@@ -694,10 +720,9 @@ body::before {
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   letter-spacing: 0.3px;
   font-family: 'Inter', sans-serif;
-  backdrop-filter: blur(10px);
 }
 
 .btn:disabled {
@@ -716,20 +741,22 @@ body::before {
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  will-change: transform;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  background: rgba(255, 255, 255, 0.95);
   color: #000000;
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.95) 100%);
+  background: #ffffff;
   border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+  will-change: transform;
 }
 
 .error-message {
@@ -969,24 +996,59 @@ body::before {
 
 /* Leaflet Popup Customization */
 .leaflet-popup-content-wrapper {
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(15, 15, 20, 0.98);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  padding: 16px 20px;
+  animation: popupFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  contain: layout style paint;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .leaflet-popup-tip {
-  background: rgba(0, 0, 0, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 15, 20, 0.98);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
 }
 
 .leaflet-popup-close-button {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+  top: 8px;
+  right: 8px;
 }
 
 .leaflet-popup-close-button:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(90deg) scale(1.1);
 }
 
 /* Focus styles for accessibility */
