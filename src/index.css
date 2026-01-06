@@ -1114,3 +1114,27 @@ textarea:focus-visible {
     box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
   }
 }
+
+/* Map Overlay Button in Location Picker */
+.map-overlay-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 400; /* Leaflet z-index is around 400 for controls usually, but let's be safe. MapContainer has zIndex 0 */
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border-radius: 20px !important;
+  padding: 8px 20px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.8rem !important;
+}
+
+.map-overlay-button:hover {
+  background: #1a1a1a !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}

@@ -238,8 +238,14 @@ function ReportIssueModal({ userLocation, onClose, onSuccess }) {
               <LocationPicker
                 initialLocation={selectedLocation}
                 defaultCenter={userLocation}
-                onLocationChange={setSelectedLocation}
-                onResetToCurrent={() => setSelectedLocation(userLocation)}
+                onLocationChange={(loc) => {
+                  setSelectedLocation(loc)
+                  setHasInteracted(true)
+                }}
+                onResetToCurrent={() => {
+                  setSelectedLocation(userLocation)
+                  setHasInteracted(false)
+                }}
               />
               <small className="hint">
                 Drag the marker or click on the map to select the exact location of the issue

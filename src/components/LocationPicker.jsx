@@ -28,7 +28,11 @@ function MapCenterController({ center, shouldRecenter }) {
       // Use invalidateSize to ensure map renders properly when container becomes visible
       setTimeout(() => {
         map.invalidateSize()
-        map.setView([center.lat, center.lng], 15)
+        const currentZoom = map.getZoom()
+        const targetZoom = Math.max(currentZoom, 15)
+        map.setView([center.lat, center.lng], targetZoom, {
+          animate: false
+        })
       }, 100)
     }
   }, [center, map, shouldRecenter])
@@ -110,10 +114,33 @@ function LocationPicker({ initialLocation, defaultCenter, onLocationChange, onRe
     <div className="location-picker">
       <div className="location-picker-header">
         <label>Select Issue Location</label>
+      </div>
+      <div className="location-map-wrapper" style={{ position: 'relative' }}>
+        <MapContainer
+          key={mapKey}
+          center={[mapCenter.lat, mapCenter.lng]}
+          zoom={15}
+          style={{ height: '300px', width: '100%', zIndex: 0 }}
+          zoomControl={true}
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MapCenterController center={selectedLocation || mapCenter} shouldRecenter={shouldRecenter} />
+          <MapClickHandler onLocationChange={handleLocationChange} />
+          {selectedLocation && (
+            <DraggableMarker
+              position={selectedLocation}
+              onPositionChange={handleLocationChange}
+            />
+          )}
+        </MapContainer>
         {onResetToCurrent && (
           <button
             type="button"
-            className="reset-location-button"
+            className="reset-location-button map-overlay-button"
             onClick={handleReset}
             title="Reset to my current location"
           >
@@ -121,27 +148,6 @@ function LocationPicker({ initialLocation, defaultCenter, onLocationChange, onRe
           </button>
         )}
       </div>
-      <MapContainer
-        key={mapKey}
-        center={[mapCenter.lat, mapCenter.lng]}
-        zoom={15}
-        style={{ height: '300px', width: '100%', zIndex: 0 }}
-        zoomControl={true}
-        scrollWheelZoom={true}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MapCenterController center={selectedLocation || mapCenter} shouldRecenter={shouldRecenter} />
-        <MapClickHandler onLocationChange={handleLocationChange} />
-        {selectedLocation && (
-          <DraggableMarker
-            position={selectedLocation}
-            onPositionChange={handleLocationChange}
-          />
-        )}
-      </MapContainer>
       <div className="location-coordinates">
         <small>
           Drag the marker or click on the map to select location
