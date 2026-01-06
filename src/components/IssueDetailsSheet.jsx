@@ -17,6 +17,7 @@ function IssueDetailsSheet({ issue, onClose }) {
     <>
       <div className="sheet-overlay" onClick={onClose}></div>
       <div className="issue-details-sheet">
+        <div className="sheet-drag-handle"></div>
         <div className="sheet-header">
           <h2>Issue Details</h2>
           <button className="close-button" onClick={onClose} aria-label="Close">
