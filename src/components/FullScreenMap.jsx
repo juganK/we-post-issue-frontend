@@ -23,14 +23,11 @@ const UserLocationIcon = L.icon({
 
 function MapController({ center, zoom, animate = false, onAnimationComplete }) {
   const map = useMap()
-  const isAnimating = useRef(false)
   const animationTimer = useRef(null)
   
   useEffect(() => {
-    // Only run if we have a center, animate is true, and we're not already animating
-    if (center && animate && !isAnimating.current) {
-      isAnimating.current = true
-      
+    // Only run if we have a center and animate is true
+    if (center && animate) {
       // Clear any existing timer
       if (animationTimer.current) {
         clearTimeout(animationTimer.current)
@@ -39,15 +36,15 @@ function MapController({ center, zoom, animate = false, onAnimationComplete }) {
       // Ensure map size is valid before animating
       map.invalidateSize()
       
-      // Perform the animation
+      // Perform the smooth zoom-in animation
+      // This will run every time the component mounts or center changes
       map.flyTo(center, zoom, {
         duration: 1.5,
         easeLinearity: 0.25
       })
       
-      // Reset animation flag and call completion callback after animation completes
+      // Call completion callback after animation completes
       animationTimer.current = setTimeout(() => {
-        isAnimating.current = false
         if (onAnimationComplete) {
           onAnimationComplete()
         }
@@ -103,6 +100,7 @@ function FullScreenMap({ userLocation, mapCenter, issues, onMarkerClick, onRepor
         />
         {mapCenter && (
           <MapController 
+            key={`${mapCenter.lat}-${mapCenter.lng}-${mapCenter._timestamp || 0}`}
             center={[mapCenter.lat, mapCenter.lng]} 
             zoom={18}
             animate={true}

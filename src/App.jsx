@@ -100,7 +100,12 @@ function App() {
 
   const handleCenterOnLocation = () => {
     if (userLocation) {
-      setMapCenter(userLocation)
+      // Always set mapCenter to trigger animation, even if location is the same
+      // Add a small timestamp to ensure it's treated as a new value
+      setMapCenter({
+        ...userLocation,
+        _timestamp: Date.now()
+      })
     } else {
       // Try to get current location
       if (navigator.geolocation) {
@@ -108,7 +113,8 @@ function App() {
           (position) => {
             const location = {
               lat: position.coords.latitude,
-              lng: position.coords.longitude
+              lng: position.coords.longitude,
+              _timestamp: Date.now()
             }
             setUserLocation(location)
             setMapCenter(location)
