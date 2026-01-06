@@ -20,19 +20,28 @@ const IssueLocationIcon = L.icon({
   className: 'issue-location-marker'
 })
 
-function MapCenterController({ center }) {
+function MapCenterController({ center, shouldRecenter }) {
   const map = useMap()
   
   useEffect(() => {
-    if (center && map) {
+    if (center && map && shouldRecenter) {
       // Use invalidateSize to ensure map renders properly when container becomes visible
       setTimeout(() => {
         map.invalidateSize()
         map.setView([center.lat, center.lng], 15)
       }, 100)
     }
-  }, [center, map])
+  }, [center, map, shouldRecenter])
   
+  return null
+}
+
+function MapClickHandler({ onLocationChange }) {
+  useMapEvents({
+    click(e) {
+      onLocationChange({ lat: e.latlng.lat, lng: e.latlng.lng })
+    }
+  })
   return null
 }
 
@@ -42,14 +51,6 @@ function DraggableMarker({ position, onPositionChange }) {
   useEffect(() => {
     setDraggedPosition(position)
   }, [position])
-
-  useMapEvents({
-    click(e) {
-      const newPosition = { lat: e.latlng.lat, lng: e.latlng.lng }
-      setDraggedPosition(newPosition)
-      onPositionChange(newPosition)
-    }
-  })
 
   const handleDragEnd = (e) => {
     const marker = e.target
@@ -71,28 +72,39 @@ function DraggableMarker({ position, onPositionChange }) {
   )
 }
 
-function LocationPicker({ initialLocation, onLocationChange, onResetToCurrent }) {
+function LocationPicker({ initialLocation, defaultCenter, onLocationChange, onResetToCurrent }) {
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
+  const [shouldRecenter, setShouldRecenter] = useState(true)
   const [mapKey, setMapKey] = useState(0)
 
   useEffect(() => {
-    if (initialLocation) {
+    // Only update if the location has actually changed from the parent side
+    // This prevents re-centering when the update came from our own handleLocationChange
+    if (initialLocation && selectedLocation) {
+      if (initialLocation.lat !== selectedLocation.lat || initialLocation.lng !== selectedLocation.lng) {
+        setSelectedLocation(initialLocation)
+        setShouldRecenter(true)
+      }
+    } else if (initialLocation !== selectedLocation) {
       setSelectedLocation(initialLocation)
+      setShouldRecenter(true)
     }
   }, [initialLocation])
 
   const handleLocationChange = (location) => {
     setSelectedLocation(location)
+    setShouldRecenter(false) // Don't recenter the map when user manually moves the marker
     onLocationChange(location)
   }
 
   const handleReset = () => {
-    if (onResetToCurrent && initialLocation) {
-      setSelectedLocation(initialLocation)
-      onLocationChange(initialLocation)
-      setMapKey(prev => prev + 1) // Force map re-render
+    if (onResetToCurrent) {
+      onResetToCurrent()
+      // The parent will update initialLocation, which triggers the useEffect above
     }
   }
+
+  const mapCenter = selectedLocation || defaultCenter || { lat: 20.5937, lng: 78.9629 } // Default to India if nothing else
 
   return (
     <div className="location-picker">
@@ -109,33 +121,36 @@ function LocationPicker({ initialLocation, onLocationChange, onResetToCurrent })
           </button>
         )}
       </div>
-      {selectedLocation && (
-        <MapContainer
-          key={mapKey}
-          center={[selectedLocation.lat, selectedLocation.lng]}
-          zoom={15}
-          style={{ height: '300px', width: '100%', zIndex: 0 }}
-          zoomControl={true}
-          scrollWheelZoom={true}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MapCenterController center={selectedLocation} />
+      <MapContainer
+        key={mapKey}
+        center={[mapCenter.lat, mapCenter.lng]}
+        zoom={15}
+        style={{ height: '300px', width: '100%', zIndex: 0 }}
+        zoomControl={true}
+        scrollWheelZoom={true}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MapCenterController center={selectedLocation || mapCenter} shouldRecenter={shouldRecenter} />
+        <MapClickHandler onLocationChange={handleLocationChange} />
+        {selectedLocation && (
           <DraggableMarker
             position={selectedLocation}
             onPositionChange={handleLocationChange}
           />
-        </MapContainer>
-      )}
+        )}
+      </MapContainer>
       <div className="location-coordinates">
         <small>
           Drag the marker or click on the map to select location
         </small>
-        <small className="coordinates-text">
-          {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
-        </small>
+        {selectedLocation && (
+          <small className="coordinates-text">
+            {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
+          </small>
+        )}
       </div>
     </div>
   )

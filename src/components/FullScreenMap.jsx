@@ -27,8 +27,8 @@ function MapController({ center, zoom, animate = false, onAnimationComplete }) {
   const isAnimating = useRef(false)
   
   useEffect(() => {
-    // Only run if we have a center and animate is true
-    if (center && animate) {
+    // Only run if we have a center
+    if (center) {
       // Stop any existing animation first to prevent stacking
       if (isAnimating.current) {
         map.stop()
@@ -39,26 +39,36 @@ function MapController({ center, zoom, animate = false, onAnimationComplete }) {
         clearTimeout(animationTimer.current)
         animationTimer.current = null
       }
-      
-      // Set animation flag
-      isAnimating.current = true
-      
-      // Ensure map size is valid before animating
-      map.invalidateSize()
-      
-      // Perform the smooth zoom-in animation for exactly 3 seconds
-      map.flyTo(center, zoom, {
-        duration: 3.0,
-        easeLinearity: 0.25
-      })
-      
-      // Call completion callback after exactly 3 seconds
-      animationTimer.current = setTimeout(() => {
-        isAnimating.current = false
+
+      if (animate) {
+        // Set animation flag
+        isAnimating.current = true
+        
+        // Ensure map size is valid before animating
+        map.invalidateSize()
+        
+        // Perform the smooth zoom-in animation for exactly 3 seconds
+        map.flyTo(center, zoom, {
+          duration: 3.0,
+          easeLinearity: 0.25
+        })
+        
+        // Call completion callback after exactly 3 seconds
+        animationTimer.current = setTimeout(() => {
+          isAnimating.current = false
+          if (onAnimationComplete) {
+            onAnimationComplete()
+          }
+        }, 3000)
+      } else {
+        // Instant move without animation and keeping current zoom
+        map.setView(center, map.getZoom(), {
+          animate: false
+        })
         if (onAnimationComplete) {
           onAnimationComplete()
         }
-      }, 3000)
+      }
     }
     
     // Cleanup function
@@ -119,7 +129,7 @@ function FullScreenMap({ userLocation, mapCenter, issues, onMarkerClick, onRepor
             key={`${mapCenter.lat}-${mapCenter.lng}-${mapCenter._timestamp || 0}`}
             center={[mapCenter.lat, mapCenter.lng]} 
             zoom={18}
-            animate={true}
+            animate={false}
             onAnimationComplete={onAnimationComplete}
           />
         )}

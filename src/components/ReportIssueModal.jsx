@@ -237,6 +237,7 @@ function ReportIssueModal({ userLocation, onClose, onSuccess }) {
             <div className="form-group">
               <LocationPicker
                 initialLocation={selectedLocation}
+                defaultCenter={userLocation}
                 onLocationChange={setSelectedLocation}
                 onResetToCurrent={() => setSelectedLocation(userLocation)}
               />
