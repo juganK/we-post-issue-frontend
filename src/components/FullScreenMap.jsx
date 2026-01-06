@@ -85,12 +85,14 @@ function FullScreenMap({ userLocation, mapCenter, issues, onMarkerClick, onRepor
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MapController 
-          center={mapCenter ? [mapCenter.lat, mapCenter.lng] : [userLocation.lat, userLocation.lng]} 
-          zoom={mapCenter ? 18 : 13}
-          animate={!!mapCenter}
-          onAnimationComplete={onAnimationComplete}
-        />
+        {mapCenter && (
+          <MapController 
+            center={[mapCenter.lat, mapCenter.lng]} 
+            zoom={18}
+            animate={true}
+            onAnimationComplete={onAnimationComplete}
+          />
+        )}
         
         {/* User Location Marker */}
         <Marker

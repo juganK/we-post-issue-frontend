@@ -184,93 +184,105 @@ function ReportIssueModal({ userLocation, onClose, onSuccess }) {
             </div>
           )}
           
-          <div className="form-group">
-            <label htmlFor="issueType">
-              Issue Type <span className="required">*</span>
-            </label>
-            <select
-              id="issueType"
-              name="issueType"
-              value={formData.issueType}
-              onChange={handleInputChange}
-              required
-            >
-              {ISSUE_TYPES.map((type) => (
-                <option key={type.value} value={type.value}>
-                  {type.label}
-                </option>
-              ))}
-            </select>
+          <div className="form-section">
+            <h3 className="form-section-title">Issue Details</h3>
+            
+            <div className="form-group">
+              <label htmlFor="issueType">
+                Issue Type <span className="required">*</span>
+              </label>
+              <select
+                id="issueType"
+                name="issueType"
+                value={formData.issueType}
+                onChange={handleInputChange}
+                required
+              >
+                {ISSUE_TYPES.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="description">
+                Description <span className="required">*</span>
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows="4"
+                placeholder="Describe the issue in detail..."
+                maxLength={500}
+                required
+              />
+              {validationErrors.description && (
+                <span className="field-error" role="alert">
+                  {validationErrors.description}
+                </span>
+              )}
+              <small className="hint">
+                {formData.description.length}/500 characters
+              </small>
+            </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="description">
-              Description <span className="required">*</span>
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              rows="4"
-              placeholder="Describe the issue in detail..."
-              maxLength={500}
-              required
-            />
-            {validationErrors.description && (
-              <span className="field-error" role="alert">
-                {validationErrors.description}
-              </span>
-            )}
-            <small className="hint">
-              {formData.description.length}/500 characters
-            </small>
+          <div className="form-section">
+            <h3 className="form-section-title">Location</h3>
+            
+            <div className="form-group">
+              <LocationPicker
+                initialLocation={selectedLocation}
+                onLocationChange={setSelectedLocation}
+                onResetToCurrent={() => setSelectedLocation(userLocation)}
+              />
+              <small className="hint">
+                Drag the marker or click on the map to select the exact location of the issue
+              </small>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="village">
+                Village / Local City <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="village"
+                name="village"
+                value={formData.village}
+                onChange={handleInputChange}
+                placeholder="Enter village or city name"
+                required
+              />
+              {validationErrors.village && (
+                <span className="field-error" role="alert">
+                  {validationErrors.village}
+                </span>
+              )}
+            </div>
           </div>
 
-          <div className="form-group">
-            <LocationPicker
-              initialLocation={selectedLocation}
-              onLocationChange={setSelectedLocation}
-              onResetToCurrent={() => setSelectedLocation(userLocation)}
-            />
-            <small className="hint">
-              Drag the marker or click on the map to select the exact location of the issue
-            </small>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="village">
-              Village / Local City <span className="required">*</span>
-            </label>
-            <input
-              type="text"
-              id="village"
-              name="village"
-              value={formData.village}
-              onChange={handleInputChange}
-              placeholder="Enter village or city name"
-              required
-            />
-            {validationErrors.village && (
-              <span className="field-error" role="alert">
-                {validationErrors.village}
-              </span>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label>
-              Image <span className="required">*</span>
-            </label>
-            <ImageUpload
-              onFileChange={handleFileChange}
-              error={validationErrors.image}
-            />
-            {validationErrors.image && (
-              <span className="field-error" role="alert">
-                {validationErrors.image}
-              </span>
-            )}
+          <div className="form-section">
+            <h3 className="form-section-title">Evidence</h3>
+            
+            <div className="form-group">
+              <label>
+                Image <span className="required">*</span>
+              </label>
+              <ImageUpload
+                onFileChange={handleFileChange}
+                error={validationErrors.image}
+              />
+              {validationErrors.image && (
+                <span className="field-error" role="alert">
+                  {validationErrors.image}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="form-actions">

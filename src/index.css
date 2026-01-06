@@ -4,11 +4,11 @@
   padding: 0;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 body {
   margin: 0;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -76,7 +76,7 @@ body::before {
   font-weight: 600;
   letter-spacing: -0.02em;
   color: #ffffff;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Loading Screen */
@@ -89,7 +89,7 @@ body::before {
   justify-content: center;
   background: #000000;
   color: #ffffff;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   position: relative;
 }
 
@@ -136,7 +136,7 @@ body::before {
   letter-spacing: 0.3px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   border-radius: 0;
 }
 
@@ -227,7 +227,7 @@ body::before {
   margin-bottom: 8px;
   text-transform: capitalize;
   font-weight: 600;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
 }
 
@@ -235,7 +235,7 @@ body::before {
   margin: 0;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   line-height: 1.5;
 }
 
@@ -299,7 +299,7 @@ body::before {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .close-button {
@@ -336,7 +336,7 @@ body::before {
   text-transform: capitalize;
   font-weight: 500;
   letter-spacing: 0.3px;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
 }
 
@@ -362,7 +362,7 @@ body::before {
 .issue-location p {
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.9);
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
   font-size: 0.95rem;
 }
@@ -430,13 +430,36 @@ body::before {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .modal-form {
   padding: 32px;
   overflow-y: auto;
   flex: 1;
+}
+
+.form-section {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.form-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Inter', sans-serif;
 }
 
 .form-group {
@@ -451,7 +474,7 @@ body::before {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .required {
@@ -472,7 +495,7 @@ body::before {
   outline: none;
   font-size: 0.95rem;
   transition: all 0.2s ease;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
 }
 
@@ -495,7 +518,7 @@ body::before {
   margin-top: 8px;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
 }
 
@@ -509,7 +532,7 @@ body::before {
   font-size: 0.85rem;
   color: rgba(255, 100, 100, 0.9);
   font-weight: 500;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .form-actions {
@@ -528,7 +551,7 @@ body::before {
   font-weight: 600;
   transition: all 0.2s ease;
   letter-spacing: 0.3px;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .btn:disabled {
@@ -687,7 +710,7 @@ body::before {
   font-size: 1rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
 }
 
@@ -729,14 +752,14 @@ body::before {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
 }
 
 .preview-size {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Responsive Design */
