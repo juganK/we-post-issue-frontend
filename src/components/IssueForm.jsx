@@ -68,7 +68,7 @@ export default function IssueForm({ position, onSubmit, isLoading, error, messag
     if (!formData.image) {
       errors.image = 'Please upload an image'
     } else {
-      const maxSize = 5 * 1024 * 1024 // 5MB
+      const maxSize = 10 * 1024 * 1024 // 5MB
       if (formData.image.size > maxSize) {
         errors.image = 'Image size must be less than 5MB'
       }

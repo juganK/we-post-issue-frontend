@@ -121,10 +121,22 @@ body::before {
   min-height: 0;
 }
 
-.report-issue-button {
-  position: fixed;
-  bottom: 120px;
+.map-controls {
+  position: absolute;
+  bottom: 40px;
   right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.map-controls > button {
+  pointer-events: auto;
+}
+
+.report-issue-button {
   background: #000000;
   color: #ffffff;
   border: 2px solid rgba(255, 255, 255, 0.2);
@@ -132,7 +144,6 @@ body::before {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  z-index: 1000;
   letter-spacing: 0.5px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -159,9 +170,6 @@ body::before {
 }
 
 .my-location-button {
-  position: fixed;
-  bottom: 120px;
-  right: 240px;
   background: #000000;
   color: #ffffff;
   border: 2px solid rgba(255, 255, 255, 0.2);
@@ -172,7 +180,6 @@ body::before {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1000;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 12px;
@@ -197,17 +204,18 @@ body::before {
 }
 
 @media (max-width: 768px) {
-  .report-issue-button {
-    bottom: 100px;
+  .map-controls {
+    bottom: 24px;
     right: 16px;
+  }
+
+  .report-issue-button {
     padding: 14px 20px;
     font-size: 13px;
     height: 48px;
   }
   
   .my-location-button {
-    bottom: 100px;
-    right: 200px;
     width: 48px;
     height: 48px;
     padding: 0;
