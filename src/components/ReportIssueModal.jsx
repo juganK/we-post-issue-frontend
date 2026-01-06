@@ -126,7 +126,14 @@ function ReportIssueModal({ userLocation, onClose, onSuccess }) {
         }
       } else if (err.request) {
         // Request was made but no response received
-        errorMessage = 'No response from server. Please check if the backend is running on port 8080.'
+        const isProduction = import.meta.env.PROD
+        if (isProduction && !API_BASE_URL) {
+          errorMessage = 'Backend API is not configured. Please set VITE_API_BASE_URL environment variable.'
+        } else if (isProduction) {
+          errorMessage = `Cannot connect to backend API at ${API_BASE_URL}. Please check if the backend is running and accessible.`
+        } else {
+          errorMessage = 'No response from server. Please check if the backend is running on port 8080.'
+        }
       } else {
         // Error in setting up the request
         errorMessage = `Request error: ${err.message}`

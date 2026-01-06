@@ -26,6 +26,9 @@ function MapController({ center, zoom, animate = false, onAnimationComplete }) {
   
   useEffect(() => {
     if (center) {
+      // Ensure map size is valid before animating
+      map.invalidateSize()
+      
       if (animate) {
         map.flyTo(center, zoom, {
           duration: 1.5,
@@ -84,7 +87,7 @@ function FullScreenMap({ userLocation, mapCenter, issues, onMarkerClick, onRepor
         />
         <MapController 
           center={mapCenter ? [mapCenter.lat, mapCenter.lng] : [userLocation.lat, userLocation.lng]} 
-          zoom={mapCenter ? 15 : 13}
+          zoom={mapCenter ? 18 : 13}
           animate={!!mapCenter}
           onAnimationComplete={onAnimationComplete}
         />

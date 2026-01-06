@@ -24,8 +24,12 @@ function MapCenterController({ center }) {
   const map = useMap()
   
   useEffect(() => {
-    if (center) {
-      map.setView([center.lat, center.lng], map.getZoom())
+    if (center && map) {
+      // Use invalidateSize to ensure map renders properly when container becomes visible
+      setTimeout(() => {
+        map.invalidateSize()
+        map.setView([center.lat, center.lng], 15)
+      }, 100)
     }
   }, [center, map])
   
@@ -72,8 +76,9 @@ function LocationPicker({ initialLocation, onLocationChange, onResetToCurrent })
   const [mapKey, setMapKey] = useState(0)
 
   useEffect(() => {
-    setSelectedLocation(initialLocation)
-    setMapKey(prev => prev + 1) // Force map re-render when location changes
+    if (initialLocation) {
+      setSelectedLocation(initialLocation)
+    }
   }, [initialLocation])
 
   const handleLocationChange = (location) => {
@@ -85,7 +90,7 @@ function LocationPicker({ initialLocation, onLocationChange, onResetToCurrent })
     if (onResetToCurrent && initialLocation) {
       setSelectedLocation(initialLocation)
       onLocationChange(initialLocation)
-      setMapKey(prev => prev + 1)
+      setMapKey(prev => prev + 1) // Force map re-render
     }
   }
 
@@ -104,24 +109,26 @@ function LocationPicker({ initialLocation, onLocationChange, onResetToCurrent })
           </button>
         )}
       </div>
-      <MapContainer
-        key={mapKey}
-        center={[selectedLocation.lat, selectedLocation.lng]}
-        zoom={15}
-        style={{ height: '300px', width: '100%' }}
-        zoomControl={true}
-        scrollWheelZoom={true}
-      >
-        {/* <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        /> */}
-        <MapCenterController center={selectedLocation} />
-        <DraggableMarker
-          position={selectedLocation}
-          onPositionChange={handleLocationChange}
-        />
-      </MapContainer>
+      {selectedLocation && (
+        <MapContainer
+          key={mapKey}
+          center={[selectedLocation.lat, selectedLocation.lng]}
+          zoom={15}
+          style={{ height: '300px', width: '100%', zIndex: 0 }}
+          zoomControl={true}
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MapCenterController center={selectedLocation} />
+          <DraggableMarker
+            position={selectedLocation}
+            onPositionChange={handleLocationChange}
+          />
+        </MapContainer>
+      )}
       <div className="location-coordinates">
         <small>
           Drag the marker or click on the map to select location

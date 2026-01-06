@@ -76,6 +76,10 @@ function App() {
       setIssues(response.data)
     } catch (error) {
       console.error('Error fetching issues:', error)
+      // Log helpful message in production if API_BASE_URL is missing
+      if (import.meta.env.PROD && !API_BASE_URL) {
+        console.error('VITE_API_BASE_URL environment variable is not set. Please configure it in Vercel project settings.')
+      }
     } finally {
       setLoading(false)
     }
