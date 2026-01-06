@@ -24,14 +24,14 @@ function App() {
             lng: position.coords.longitude
           }
           setUserLocation(location)
-          setMapCenter(location)
+          // Don't set mapCenter on initial load to prevent auto-zoom
         },
         (error) => {
           console.error('Error getting location:', error)
           // Default to India center if location denied
           const defaultLocation = { lat: 20.5937, lng: 78.9629 }
           setUserLocation(defaultLocation)
-          setMapCenter(defaultLocation)
+          // Don't set mapCenter on initial load to prevent auto-zoom
         }
       )
 
@@ -60,7 +60,7 @@ function App() {
     } else {
       const defaultLocation = { lat: 20.5937, lng: 78.9629 }
       setUserLocation(defaultLocation)
-      setMapCenter(defaultLocation)
+      // Don't set mapCenter on initial load to prevent auto-zoom
     }
   }, [])
 

@@ -14,6 +14,18 @@ const ISSUE_TYPES = [
 
 function ReportIssueModal({ userLocation, onClose, onSuccess }) {
   const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+  
+  // Check for placeholder values and log warning
+  useEffect(() => {
+    if (API_BASE_URL && (
+      API_BASE_URL.includes('your-backend') || 
+      API_BASE_URL.includes('example.com') ||
+      (import.meta.env.PROD && API_BASE_URL.includes('localhost'))
+    )) {
+      console.warn('⚠️ VITE_API_BASE_URL appears to be set to a placeholder value. Please update it with your actual backend URL in Vercel project settings.')
+    }
+  }, [API_BASE_URL])
+  
   const [selectedLocation, setSelectedLocation] = useState(userLocation)
   const [formData, setFormData] = useState({
     description: '',
@@ -127,8 +139,18 @@ function ReportIssueModal({ userLocation, onClose, onSuccess }) {
       } else if (err.request) {
         // Request was made but no response received
         const isProduction = import.meta.env.PROD
-        if (isProduction && !API_BASE_URL) {
-          errorMessage = 'Backend API is not configured. Please set VITE_API_BASE_URL environment variable.'
+        const isPlaceholder = API_BASE_URL && (
+          API_BASE_URL.includes('your-backend') || 
+          API_BASE_URL.includes('example.com') ||
+          (isProduction && (API_BASE_URL.includes('localhost') || API_BASE_URL.includes('127.0.0.1')))
+        )
+        
+        if (isProduction && (!API_BASE_URL || isPlaceholder)) {
+          if (isPlaceholder) {
+            errorMessage = 'Backend API URL is set to a placeholder value. Please update VITE_API_BASE_URL in Vercel project settings with your actual backend URL (e.g., https://your-backend.vercel.app). Do NOT include :8080 in production URLs.'
+          } else {
+            errorMessage = 'Backend API is not configured. Please set VITE_API_BASE_URL environment variable in Vercel project settings.'
+          }
         } else if (isProduction) {
           errorMessage = `Cannot connect to backend API at ${API_BASE_URL}. Please check if the backend is running and accessible.`
         } else {
