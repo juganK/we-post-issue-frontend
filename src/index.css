@@ -123,7 +123,7 @@ body::before {
 
 .report-issue-button {
   position: fixed;
-  bottom: 32px;
+  top: 100px;
   right: 32px;
   background: #000000;
   color: #ffffff;
@@ -156,7 +156,7 @@ body::before {
 
 .my-location-button {
   position: fixed;
-  bottom: 32px;
+  top: 100px;
   right: 200px;
   background: #000000;
   color: #ffffff;
@@ -194,15 +194,15 @@ body::before {
 
 @media (max-width: 768px) {
   .report-issue-button {
-    bottom: 20px;
-    right: 20px;
+    top: 80px;
+    right: 16px;
     padding: 14px 24px;
     font-size: 13px;
   }
   
   .my-location-button {
-    right: 20px;
-    bottom: 80px;
+    top: 80px;
+    right: 180px;
     width: 48px;
     height: 48px;
     padding: 12px;
@@ -497,8 +497,9 @@ body::before {
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   z-index: 2000;
-  animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeIn 0.2s ease-out;
   will-change: opacity;
+  contain: layout style paint;
 }
 
 .report-modal {
@@ -516,16 +517,17 @@ body::before {
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  animation: modalSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: modalSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   will-change: transform, opacity;
   contain: layout style paint;
+  transform-origin: center center;
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -48%) scale(0.95);
+    transform: translate(-50%, -45%) scale(0.96);
   }
   to {
     opacity: 1;

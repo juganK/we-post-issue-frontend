@@ -23,27 +23,43 @@ const UserLocationIcon = L.icon({
 
 function MapController({ center, zoom, animate = false, onAnimationComplete }) {
   const map = useMap()
-  const hasAnimated = useRef(false)
+  const isAnimating = useRef(false)
+  const animationTimer = useRef(null)
   
   useEffect(() => {
-    if (center && animate && !hasAnimated.current) {
-      hasAnimated.current = true
+    // Only run if we have a center, animate is true, and we're not already animating
+    if (center && animate && !isAnimating.current) {
+      isAnimating.current = true
+      
+      // Clear any existing timer
+      if (animationTimer.current) {
+        clearTimeout(animationTimer.current)
+      }
+      
       // Ensure map size is valid before animating
       map.invalidateSize()
       
+      // Perform the animation
       map.flyTo(center, zoom, {
         duration: 1.5,
         easeLinearity: 0.25
       })
       
-      // Reset animation flag after animation completes
-      const timer = setTimeout(() => {
+      // Reset animation flag and call completion callback after animation completes
+      animationTimer.current = setTimeout(() => {
+        isAnimating.current = false
         if (onAnimationComplete) {
           onAnimationComplete()
         }
-        hasAnimated.current = false
       }, 1500)
-      return () => clearTimeout(timer)
+    }
+    
+    // Cleanup function
+    return () => {
+      if (animationTimer.current) {
+        clearTimeout(animationTimer.current)
+        animationTimer.current = null
+      }
     }
   }, [center, zoom, map, animate, onAnimationComplete])
   
