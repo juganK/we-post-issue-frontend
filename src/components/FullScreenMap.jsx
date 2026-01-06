@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from 'react-leaflet'
 import L from 'leaflet'
 import icon from 'leaflet/dist/images/marker-icon.png'
@@ -23,27 +23,27 @@ const UserLocationIcon = L.icon({
 
 function MapController({ center, zoom, animate = false, onAnimationComplete }) {
   const map = useMap()
+  const hasAnimated = useRef(false)
   
   useEffect(() => {
-    if (center) {
+    if (center && animate && !hasAnimated.current) {
+      hasAnimated.current = true
       // Ensure map size is valid before animating
       map.invalidateSize()
       
-      if (animate) {
-        map.flyTo(center, zoom, {
-          duration: 1.5,
-          easeLinearity: 0.25
-        })
-        // Reset animation flag after animation completes
-        const timer = setTimeout(() => {
-          if (onAnimationComplete) {
-            onAnimationComplete()
-          }
-        }, 1500)
-        return () => clearTimeout(timer)
-      } else {
-        map.setView(center, zoom)
-      }
+      map.flyTo(center, zoom, {
+        duration: 1.5,
+        easeLinearity: 0.25
+      })
+      
+      // Reset animation flag after animation completes
+      const timer = setTimeout(() => {
+        if (onAnimationComplete) {
+          onAnimationComplete()
+        }
+        hasAnimated.current = false
+      }, 1500)
+      return () => clearTimeout(timer)
     }
   }, [center, zoom, map, animate, onAnimationComplete])
   
