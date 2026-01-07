@@ -21,6 +21,17 @@ const UserLocationIcon = L.icon({
   className: 'user-location-marker'
 })
 
+// Default center fallback (India)
+const defaultCenter = [20.5937, 78.9629]
+
+// Blinking issue marker icon
+const IssueBlinkIcon = L.divIcon({
+  className: 'issue-blink-container',
+  html: `<div class="issue-blink-dot"></div>`,
+  iconSize: [18, 18],
+  iconAnchor: [9, 9]
+})
+
 function MapController({ center, zoom, animate = false, onAnimationComplete }) {
   const map = useMap()
   const animationTimer = useRef(null)
@@ -102,27 +113,18 @@ function FullScreenMap({ userLocation, mapCenter, issues, onMarkerClick, onRepor
     return colors[issueType] || '#95a5a6'
   }
 
-  const createBlinkingRedIcon = () => {
-    return L.divIcon({
-      className: 'issue-blink-container',
-      html: `<div class="issue-blink-dot"></div>`,
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
-    })
-  }
-
   return (
     <div className="fullscreen-map-container">
       <MapContainer
-        center={[userLocation.lat, userLocation.lng]}
-        zoom={13}
+        center={userLocation ? [userLocation.lat, userLocation.lng] : defaultCenter}
+        zoom={userLocation ? 13 : 5}
         style={{ height: '100%', width: '100%' }}
         zoomControl={true}
         scrollWheelZoom={true}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; OpenStreetMap &copy; CARTO'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         {mapCenter && (
           <MapController 
@@ -162,7 +164,7 @@ function FullScreenMap({ userLocation, mapCenter, issues, onMarkerClick, onRepor
           <Marker
             key={issue.id}
             position={[issue.latitude, issue.longitude]}
-            icon={createBlinkingRedIcon()}
+            icon={IssueBlinkIcon}
             eventHandlers={{
               click: () => onMarkerClick(issue)
             }}
